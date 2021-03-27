@@ -1,25 +1,34 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, ImgHTMLAttributes } from 'react';
 
-const ImageWithFallback: FC<any> = (props: any) => {
-  const { src, fallback, ...rest } = props;
-  const [imgSrc, setImgSrc] = useState(fallback);
+interface Props extends ImgHTMLAttributes<HTMLImageElement> {
+  fallback?: string;
+  placeholder?: string;
+}
+
+const ImageWithFallback: FC<Props> = ({
+  src,
+  fallback,
+  placeholder,
+  alt,
+  ...rest
+}) => {
+  const [imgSrc, setImgSrc] = useState(fallback || placeholder);
 
   useEffect(() => {
     if (!src) {
       return;
     }
 
+    const onImgLoad = () => { setImgSrc(img.src); }
     const img = new Image();
     img.src = src;
 
-    const listener: any = img.addEventListener('load', event => {
-      setImgSrc(img.src);
-    });
+    img.addEventListener('load', onImgLoad);
 
-    return () => img.removeEventListener('load', listener);
+    return () => img.removeEventListener('load', onImgLoad);
   }, [src]);
 
-  return <img alt={props.all || ''} src={imgSrc} {...rest} />;
+  return <img alt={alt || 'image'} src={imgSrc} {...rest} />;
 };
 
 export default ImageWithFallback;
