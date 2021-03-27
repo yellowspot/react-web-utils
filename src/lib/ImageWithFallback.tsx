@@ -5,13 +5,7 @@ interface Props extends ImgHTMLAttributes<HTMLImageElement> {
   placeholder?: string;
 }
 
-const ImageWithFallback: FC<Props> = ({
-  src,
-  fallback,
-  placeholder,
-  alt,
-  ...rest
-}) => {
+const ImageWithFallback: FC<Props> = ({ src, fallback, placeholder, alt, ...rest }) => {
   const [imgSrc, setImgSrc] = useState(fallback || placeholder);
 
   useEffect(() => {
@@ -19,7 +13,9 @@ const ImageWithFallback: FC<Props> = ({
       return;
     }
 
-    const onImgLoad = () => { setImgSrc(img.src); }
+    const onImgLoad = () => {
+      setImgSrc(img.src);
+    };
     const img = new Image();
     img.src = src;
 

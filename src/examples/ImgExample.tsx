@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Img } from "../lib/index";
+import { Img } from '../lib/index';
 import placeholder from '../assets/logo192.png';
 
 export const ImgExample: FC = () => {
