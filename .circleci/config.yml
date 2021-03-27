@@ -1,0 +1,25 @@
+defaults: &defaults
+  docker:
+    - image: circleci/node:14.16.0-browsers
+  resource_class: small
+
+orbs:
+  node: circleci/node@4.1.0
+version: 2.1
+workflows:
+  run_test:
+    jobs:
+      - test
+
+jobs:
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          command: npm run test
+          name: Run tests
+      - run:
+          command: npm run build
+          name: Run build
