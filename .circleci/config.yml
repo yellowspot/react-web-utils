@@ -18,6 +18,9 @@ jobs:
       - checkout
       - node/install-packages
       - run:
+          command: npm run lint
+          name: Run lint
+      - run:
           command: npm run test
           name: Run tests
       - run:
