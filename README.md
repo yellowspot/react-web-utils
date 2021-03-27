@@ -14,7 +14,7 @@ import placeholder from './placeholder.png';
 
 ...
 
-<ImageWithFallback
+<Img
   src="https://some.image.png"
   fallback={placeholder}
   alt="logo"
