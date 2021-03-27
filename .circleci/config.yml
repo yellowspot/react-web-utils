@@ -10,6 +10,21 @@ workflows:
   run_test:
     jobs:
       - test
+      - hold:
+          filters:
+            branches:
+              only:
+                - master
+          type: approval
+          requires:
+            - test
+      - publish:
+          name: Npm publish
+          filters:
+            branches:
+              only: master
+          requires:
+            - hold
 
 jobs:
   test:
@@ -26,3 +41,17 @@ jobs:
       - run:
           command: npm run build
           name: Run build
+  publish:
+    <<: *defaults
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Build
+          command: npm run build
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/project/.npmrc
+      - run:
+          name: Publish
+          command: npm publish --access=public
